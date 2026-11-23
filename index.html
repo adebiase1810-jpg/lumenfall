@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>LUMENFALL — Arènes du Soleil Brisé</title>
+<meta name="description" content="Jeu d'arène 3D dans les anneaux d'une étoile brisée. Solo, Échos IA, modes, progression.">
+<meta name="theme-color" content="#05080f">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles/main.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 3 L26 26 L16 21 L6 26 Z' fill='%23ffb347'/%3E%3C/svg%3E">
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.1/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body class="state-boot">
+  <div id="gl"></div>
+  <div id="grain" aria-hidden="true"></div>
+
+  <div id="ui" class="hidden">
+    <header id="topbar"></header>
+    <nav id="rail"></nav>
+    <main id="panel"></main>
+    <div id="menufoot"></div>
+  </div>
+
+  <div id="hud" class="hidden"></div>
+  <div id="fxlayer" aria-hidden="true"></div>
+  <div id="dropdown-notif" class="hidden"></div>
+  <div id="toasts"></div>
+  <div id="modal" class="hidden"></div>
+
+  <div id="boot">
+    <div class="boot-inner">
+      <div id="boot-logo"></div>
+      <div class="boot-bar"><div id="boot-fill"></div></div>
+      <div id="boot-status">Éveil du noyau…</div>
+      <div id="boot-tip"></div>
+    </div>
+  </div>
+
+  <div id="fatal" class="hidden">
+    <div class="fatal-card">
+      <div class="fatal-title">SIGNAL PERDU</div>
+      <p id="fatal-msg">Le noyau n'a pas pu s'initialiser.</p>
+      <p class="fatal-hint">LUMENFALL requiert WebGL2 et une connexion au premier chargement (moteur 3D via CDN). Vérifiez votre navigateur, puis rechargez.</p>
+      <button class="btn btn-primary" onclick="location.reload()">RÉINITIALISER LE SIGNAL</button>
+    </div>
+  </div>
+
+<script type="module">
+  const fatal = (msg) => {
+    document.getElementById('boot')?.classList.add('hidden');
+    const f = document.getElementById('fatal');
+    f.classList.remove('hidden');
+    if (msg) document.getElementById('fatal-msg').textContent = String(msg).slice(0, 300);
+  };
+  window.addEventListener('error', e => { if (document.body.classList.contains('state-boot')) fatal(e.message); });
+  import('./js/main.js').catch(err => { console.error(err); fatal(err && err.message); });
+</script>
+</body>
+</html>
